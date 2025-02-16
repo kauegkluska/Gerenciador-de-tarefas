@@ -1,0 +1,45 @@
+<div class="container">
+    <h1>Resources</h1>
+    <a href="/resources/create" class="btn btn-primary">Create New Resource</a>
+    <a href="/" class="btn btn-primary">Back</a>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each resources}}
+            <tr>
+                <th scope="row">{{this.id}}</th>
+                <td>{{this.nome}}</td>
+                <td>{{this.descricao}}</td>
+                <td>
+                    <a href="/resources/{{this.id}}" class="btn btn-primary">Show</a>
+                    <a href="/resources/{{this.id}}/edit" class="btn btn-secondary">Edit</a>
+                    <a href="#" class="btn btn-danger" onclick="deleteResources({{this.id}})">Remove</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    async function deleteResources(id) {
+        if (confirm("Do you really want to remove?")) {
+            const response = await fetch(`/resources/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-Token": "{{csrfToken}}"
+                }
+            });
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        }
+    }
+</script>
